@@ -186,6 +186,8 @@ export class MinecraftServerCdkStack extends Stack {
         MAX_MEMORY: "3600M",
         MAX_PLAYERS: "50",
         TYPE: type,
+        MODPACK:
+          "https://github.com/princejoogie/joogie-mc-server/raw/main/apps/docker/modpacks/joogie.zip",
       },
       logging: ecs.LogDrivers.awsLogs({
         streamPrefix: name,

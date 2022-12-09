@@ -57,10 +57,7 @@ WORKDIR /data
 
 STOPSIGNAL SIGTERM
 
-ENV UID=1000 GID=1000 RCON_PASSWORD=minecraft EULA=TRUE MEMORY="2G" VERSION="1.18.2" SERVER_NAME="joogie" MOTD="joogie's server for degens" ONLINE_MODE="false" SKIP_SERVER_PROPERTIES="false" MAX_PLAYERS=50 SPAWN_NPCS="false" VIEW_DISTANCE=12 TYPE=FORGE
-# ENV MODS_FORGEAPI_KEY="$2a$10$4lGD8Dwoin5m8Pa3C7d/i.fxqtC7C/3vibuWRQzn.5ODcBB/hZiY."
-# ENV MODS_FORGEAPI_PROJECTIDS="282001,263420"
-ENV MODPACK="https://github.com/princejoogie/joogie-mc-server/raw/main/apps/docker/modpacks/joogie.zip"
+ENV UID=1000 GID=1000 RCON_PASSWORD=minecraft EULA=TRUE MEMORY="2G" VERSION="1.18.2"
 
 COPY --chmod=755 scripts/start* /
 COPY --chmod=755 bin/ /usr/local/bin/
