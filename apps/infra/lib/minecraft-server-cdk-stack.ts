@@ -36,7 +36,7 @@ export class MinecraftServerCdkStack extends Stack {
       vpc: this.vpc,
     });
 
-    this.createService("my-guild", "1234567890", "princejoogie", "VANILLA");
+    this.createService("my-guild", "1234567890", "princejoogie", "FORGE");
   }
 
   initSecurityGroups = () => {

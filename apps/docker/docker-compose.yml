@@ -20,6 +20,7 @@ services:
       - "25575:25575"
     volumes:
       - data:/data
+      - ./mods:/mods:ro
     stdin_open: true
     tty: true
     restart: unless-stopped
