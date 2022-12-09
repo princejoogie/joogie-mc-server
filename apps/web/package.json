@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rimraf node_modules/ .turbo/ dist/",
+    "cache:clean": "rimraf .turbo/ .next/"
   },
   "dependencies": {
     "next": "13.0.0",

@@ -10,12 +10,14 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "cache:clean": "",
+    "clean": "turbo run clean --parallel && rm -rf node_modules/",
+    "cache:clean": "turbo run cache:clean --parallel && rm -rf node_modules/.cache",
     "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx,css,html}\""
   },
   "devDependencies": {
     "eslint-config-custom": "*",
     "prettier": "^2.8.1",
+    "rimraf": "^3.0.2",
     "turbo": "latest"
   },
   "engines": {
