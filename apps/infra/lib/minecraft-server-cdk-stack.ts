@@ -169,7 +169,8 @@ export class MinecraftServerCdkStack extends Stack {
     type: string
   ) => {
     const container = task.addContainer(name, {
-      image: ecs.ContainerImage.fromRegistry("itzg/minecraft-server"),
+      /* image: ecs.ContainerImage.fromRegistry("itzg/minecraft-server"), */
+      image: ecs.ContainerImage.fromRegistry("princejoogie/minecraft-server"),
       essential: true,
       environment: {
         EULA: "TRUE",

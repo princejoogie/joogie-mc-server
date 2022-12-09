@@ -64,6 +64,7 @@ COPY --chmod=755 bin/ /usr/local/bin/
 COPY --chmod=755 bin/mc-health /health.sh
 COPY --chmod=644 files/log4j2.xml /image/log4j2.xml
 COPY --chmod=755 files/auto /auto
+COPY --chmod=755 mods/ /data/mods/
 
 RUN dos2unix /start* /auto/*
 
