@@ -10,11 +10,12 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "cache:clean": "",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx,css,html}\""
   },
   "devDependencies": {
     "eslint-config-custom": "*",
-    "prettier": "latest",
+    "prettier": "^2.8.1",
     "turbo": "latest"
   },
   "engines": {
