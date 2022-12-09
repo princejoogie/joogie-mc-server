@@ -58,13 +58,14 @@ WORKDIR /data
 STOPSIGNAL SIGTERM
 
 ENV UID=1000 GID=1000 RCON_PASSWORD=minecraft EULA=TRUE MEMORY="2G" VERSION="1.18.2" SERVER_NAME="joogie" MOTD="joogie's server for degens" ONLINE_MODE="false" SKIP_SERVER_PROPERTIES="false" MAX_PLAYERS=50 SPAWN_NPCS="false" VIEW_DISTANCE=12 TYPE=FORGE
+ENV MODS_FORGEAPI_KEY="$2a$10$4lGD8Dwoin5m8Pa3C7d/i.fxqtC7C/3vibuWRQzn.5ODcBB/hZiY."
+ENV MODS_FORGEAPI_PROJECTIDS="282001,263420"
 
 COPY --chmod=755 scripts/start* /
 COPY --chmod=755 bin/ /usr/local/bin/
 COPY --chmod=755 bin/mc-health /health.sh
 COPY --chmod=644 files/log4j2.xml /image/log4j2.xml
 COPY --chmod=755 files/auto /auto
-COPY --chmod=755 mods/ /data/mods/
 
 RUN dos2unix /start* /auto/*
 
