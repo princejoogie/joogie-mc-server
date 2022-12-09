@@ -1,0 +1,27 @@
+#!/bin/bash
+
+: "${FORGE_VERSION:=${FORGEVERSION:-RECOMMENDED}}"
+: "${FORGE_FORCE_REINSTALL:=false}}"
+
+# shellcheck source=start-utils
+. "${SCRIPTS:-$(dirname "$0")}/start-utils"
+isDebugging && set -x
+
+if ! mc-image-helper install-forge \
+  --output-directory=/data \
+  --results-file=/data/.run-forge.env \
+  --minecraft-version="${VANILLA_VERSION}" \
+  --forge-version="${FORGE_VERSION}" \
+  --force-reinstall="${FORGE_FORCE_REINSTALL}"; then
+    log "ERROR failed to install forge"
+    exit 1
+fi
+
+# grab SERVER and export it
+set -a
+source /data/.run-forge.env
+set +a
+
+export FAMILY=FORGE
+
+exec "${SCRIPTS:-/}start-setupWorld" "$@"

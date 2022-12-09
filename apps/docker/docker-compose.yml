@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  mc:
+    image: itzg/minecraft-server
+    environment:
+      EULA: "true"
+      MEMORY: "2G"
+      VERSION: "1.18.2"
+      SERVER_NAME: "joogie"
+      MOTD: "joogie's server for degens"
+      ONLINE_MODE: "false"
+      SKIP_SERVER_PROPERTIES: "false"
+      MAX_PLAYERS: 50
+      SPAWN_NPCS: "false"
+      VIEW_DISTANCE: 12
+      TYPE: FORGE
+    ports:
+      - "25565:25565"
+      - "25575:25575"
+    volumes:
+      - data:/data
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+volumes:
+  data: {}

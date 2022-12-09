@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# shellcheck source=start-utils
+. "${SCRIPTS:-/}start-utils"
+isDebugging && set -x
+
+: "${VANILLA_VERSION?}"
+
+if ! downloadUrl=$(get --json-path '$.link' "https://api.magmafoundation.org/api/v2/${VANILLA_VERSION}/latest"); then
+  log "ERROR failed to locate latest Magma download for ${VANILLA_VERSION}. Is that version supported?"
+  exit 1
+fi
+
+if ! SERVER=$(get --output-filename --skip-up-to-date --output /data "$downloadUrl"); then
+  log "ERROR: failed to download Magma server jar from $downloadUrl"
+  exit 1
+fi
+
+export SERVER
+export FAMILY=HYBRID
+
+exec "${SCRIPTS:-/}start-setupWorld" "$@"
