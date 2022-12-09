@@ -64,6 +64,7 @@ function customizeServerProps {
   setServerProp "server-ip" SERVER_IP
   setServerProp "server-port" SERVER_PORT
   setServerProp "allow-nether" ALLOW_NETHER
+  setServerProp "allow-cheats" ALLOW_CHEATS
   setServerProp "announce-player-achievements" ANNOUNCE_PLAYER_ACHIEVEMENTS
   setServerProp "enable-command-block" ENABLE_COMMAND_BLOCK
   setServerProp "spawn-animals" SPAWN_ANIMALS

@@ -180,6 +180,7 @@ export class MinecraftServerCdkStack extends Stack {
         MOTD: "joogie's server for degens",
         ONLINE_MODE: "false",
         ALLOW_NETHER: "true",
+        ALLOW_CHEATS: "true",
         ENABLE_COMMAND_BLOCK: "true",
         ENABLE_RCON: "true",
         MAX_TICK_TIME: "60000",
