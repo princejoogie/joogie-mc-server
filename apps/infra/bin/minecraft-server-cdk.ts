@@ -11,4 +11,5 @@ new MinecraftServerCdkStack(app, "MinecraftServerCdkStack", {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION,
   },
+  stackName: "mcscdk",
 });

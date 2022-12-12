@@ -11,11 +11,8 @@ import {
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
-const OPTIONS = {
-  name: "mcscdk",
-};
-
 export class MinecraftServerCdkStack extends Stack {
+  private name: string;
   private vpc: ec2.IVpc;
   private efsSG: ec2.SecurityGroup;
   private minecraftSG: ec2.SecurityGroup;
@@ -27,26 +24,25 @@ export class MinecraftServerCdkStack extends Stack {
 
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-
-    this.vpc = ec2.Vpc.fromLookup(this, "VPC", {
-      isDefault: true,
-    });
-
+    this.name = props?.stackName ?? "mcscdk";
+    this.vpc = new ec2.Vpc(this, `${this.name}-vpc`);
     this.initSecurityGroups();
     this.initBotGroup();
 
     this.loadBalancer = new elbv2.NetworkLoadBalancer(
       this,
-      `${OPTIONS.name}-lb`,
-      { vpc: this.vpc }
+      `${this.name}-nlb`,
+      {
+        vpc: this.vpc,
+      }
     );
 
-    this.cluster = new ecs.Cluster(this, `${OPTIONS.name}-cluster`, {
+    this.cluster = new ecs.Cluster(this, `${this.name}-cluster`, {
       vpc: this.vpc,
     });
 
     this.service = this.createService(
-      "my-guild",
+      this.name,
       "1234567890",
       "princejoogie",
       "FORGE"
@@ -57,11 +53,12 @@ export class MinecraftServerCdkStack extends Stack {
   }
 
   createLbListener = (port: number) => {
-    const listener = this.loadBalancer.addListener(`${OPTIONS.name}-${port}-listener`, {
-      port,
-    });
+    const listener = this.loadBalancer.addListener(
+      `${this.name}-${port}-listener`,
+      { port }
+    );
 
-    const targetGroup = listener.addTargets(`${OPTIONS.name}-target`, {
+    const targetGroup = listener.addTargets(`${this.name}-target`, {
       protocol: elbv2.Protocol.TCP,
       port,
     });
@@ -124,9 +121,9 @@ export class MinecraftServerCdkStack extends Stack {
 
     statement.addAllResources();
 
-    const group = new iam.Group(this, `${OPTIONS.name}-group`);
+    const group = new iam.Group(this, `${this.name}-group`);
     group.addManagedPolicy(
-      new iam.ManagedPolicy(this, `${OPTIONS.name}-start-stop-policy`, {
+      new iam.ManagedPolicy(this, `${this.name}-start-stop-policy`, {
         statements: [statement],
       })
     );
@@ -161,11 +158,15 @@ export class MinecraftServerCdkStack extends Stack {
     type: string
   ) => {
     const volume = this.createEfsVolume(name);
-    const task = new ecs.FargateTaskDefinition(this, name, {
-      cpu: 1024,
-      memoryLimitMiB: 4096,
-      volumes: [volume],
-    });
+    const task = new ecs.FargateTaskDefinition(
+      this,
+      `${name}-task-definition`,
+      {
+        cpu: 1024,
+        memoryLimitMiB: 4096,
+        volumes: [volume],
+      }
+    );
 
     Tags.of(task).add("guild", guild);
     this.createContainer(name, task, operators, volume, type);
