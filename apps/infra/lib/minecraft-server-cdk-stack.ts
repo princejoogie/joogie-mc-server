@@ -52,11 +52,11 @@ export class MinecraftServerCdkStack extends Stack {
       "FORGE"
     );
 
-    this.createLb(25565);
-    this.createLb(25575);
+    this.createLbListener(25565);
+    this.createLbListener(25575);
   }
 
-  createLb = (port: number) => {
+  createLbListener = (port: number) => {
     const listener = this.loadBalancer.addListener(`${OPTIONS.name}-${port}-listener`, {
       port,
     });
