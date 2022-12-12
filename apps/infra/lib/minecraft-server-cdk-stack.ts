@@ -7,7 +7,6 @@ import {
   aws_iam as iam,
   aws_efs as efs,
   aws_logs as logs,
-  aws_elasticloadbalancingv2 as elbv2,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
@@ -19,8 +18,6 @@ export class MinecraftServerCdkStack extends Stack {
   private mcRconSG: ec2.SecurityGroup;
   private sshSG: ec2.SecurityGroup;
   private cluster: ecs.Cluster;
-  private service: ecs.FargateService;
-  private loadBalancer: elbv2.NetworkLoadBalancer;
 
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
@@ -29,42 +26,12 @@ export class MinecraftServerCdkStack extends Stack {
     this.initSecurityGroups();
     this.initBotGroup();
 
-    this.loadBalancer = new elbv2.NetworkLoadBalancer(
-      this,
-      `${this.name}-nlb`,
-      {
-        vpc: this.vpc,
-      }
-    );
-
     this.cluster = new ecs.Cluster(this, `${this.name}-cluster`, {
       vpc: this.vpc,
     });
 
-    this.service = this.createService(
-      this.name,
-      "1234567890",
-      "princejoogie",
-      "FORGE"
-    );
-
-    this.createLbListener(25565);
-    this.createLbListener(25575);
+    this.createService(this.name, "1234567890", "princejoogie", "FORGE");
   }
-
-  createLbListener = (port: number) => {
-    const listener = this.loadBalancer.addListener(
-      `${this.name}-${port}-listener`,
-      { port }
-    );
-
-    const targetGroup = listener.addTargets(`${this.name}-target`, {
-      protocol: elbv2.Protocol.TCP,
-      port,
-    });
-
-    targetGroup.addTarget(this.service);
-  };
 
   initSecurityGroups = () => {
     this.efsSG = new ec2.SecurityGroup(this, "efs-sg", {
