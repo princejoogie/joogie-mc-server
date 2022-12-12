@@ -17,6 +17,7 @@ export class MinecraftServerCdkStack extends Stack {
   private minecraftSG: ec2.SecurityGroup;
   private mcRconSG: ec2.SecurityGroup;
   private sshSG: ec2.SecurityGroup;
+  private efsAccessSG: ec2.SecurityGroup;
   private cluster: ecs.Cluster;
 
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -41,7 +42,8 @@ export class MinecraftServerCdkStack extends Stack {
 
     this.minecraftSG = this.efsSecGroup("minecraft", 25565);
     this.mcRconSG = this.efsSecGroup("mcrcon", 25575);
-    this.sshSG = this.efsSecGroup("ssh", 25565);
+    this.sshSG = this.efsSecGroup("ssh", 22);
+    this.efsAccessSG = this.efsSecGroup("efsAccess", 2049);
   };
 
   efsSecGroup = (name: string, port: number) => {
@@ -57,15 +59,16 @@ export class MinecraftServerCdkStack extends Stack {
       `${name} from anywhere`
     );
 
-    this.efsSG.addIngressRule(
-      secGroup,
-      ec2.Port.tcp(2049),
-      `Allow clients from ${name}`
-    );
     secGroup.addIngressRule(
       this.efsSG,
       ec2.Port.tcp(2049),
       `Allow efs access for ${name}`
+    );
+
+    this.efsSG.addIngressRule(
+      secGroup,
+      ec2.Port.tcp(2049),
+      `Allow clients from ${name}`
     );
 
     return secGroup;
@@ -109,7 +112,7 @@ export class MinecraftServerCdkStack extends Stack {
       taskDefinition: this.createTask(name, guild, operators, type),
       assignPublicIp: true,
       desiredCount: 1,
-      securityGroups: [this.minecraftSG, this.mcRconSG, this.sshSG],
+      securityGroups: [this.minecraftSG, this.mcRconSG, this.sshSG, this.efsAccessSG],
       propagateTags: ecs.PropagatedTagSource.SERVICE,
       platformVersion: ecs.FargatePlatformVersion.VERSION1_4,
     });
