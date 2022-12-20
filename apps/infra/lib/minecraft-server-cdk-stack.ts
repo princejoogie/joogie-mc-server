@@ -190,7 +190,8 @@ export class MinecraftServerCdkStack extends Stack {
         ENABLE_COMMAND_BLOCK: "true",
         ENABLE_RCON: "true",
         MAX_TICK_TIME: "60000",
-        MAX_MEMORY: "1024M",
+        MAX_MEMORY: "1536M",
+        MEMORY: "1024M",
         MAX_PLAYERS: "50",
         TYPE: type,
         MODPACK:
