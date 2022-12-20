@@ -138,7 +138,7 @@ export class MinecraftServerCdkStack extends Stack {
       `${name}-task-definition`,
       {
         cpu: 512,
-        memoryLimitMiB: 2048,
+        memoryLimitMiB: 1536,
         volumes: [volume],
       }
     );
