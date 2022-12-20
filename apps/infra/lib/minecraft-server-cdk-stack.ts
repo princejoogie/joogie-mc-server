@@ -138,7 +138,7 @@ export class MinecraftServerCdkStack extends Stack {
       `${name}-task-definition`,
       {
         cpu: 512,
-        memoryLimitMiB: 1536,
+        memoryLimitMiB: 2048,
         volumes: [volume],
       }
     );
@@ -190,7 +190,7 @@ export class MinecraftServerCdkStack extends Stack {
         ENABLE_COMMAND_BLOCK: "true",
         ENABLE_RCON: "true",
         MAX_TICK_TIME: "60000",
-        MAX_MEMORY: "2048M",
+        MAX_MEMORY: "1024M",
         MAX_PLAYERS: "50",
         TYPE: type,
         MODPACK:
