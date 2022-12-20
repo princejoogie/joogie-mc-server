@@ -112,7 +112,12 @@ export class MinecraftServerCdkStack extends Stack {
       taskDefinition: this.createTask(name, guild, operators, type),
       assignPublicIp: true,
       desiredCount: 1,
-      securityGroups: [this.minecraftSG, this.mcRconSG, this.sshSG, this.efsAccessSG],
+      securityGroups: [
+        this.minecraftSG,
+        this.mcRconSG,
+        this.sshSG,
+        this.efsAccessSG,
+      ],
       propagateTags: ecs.PropagatedTagSource.SERVICE,
       platformVersion: ecs.FargatePlatformVersion.VERSION1_4,
     });
@@ -132,8 +137,8 @@ export class MinecraftServerCdkStack extends Stack {
       this,
       `${name}-task-definition`,
       {
-        cpu: 1024,
-        memoryLimitMiB: 4096,
+        cpu: 512,
+        memoryLimitMiB: 2048,
         volumes: [volume],
       }
     );
@@ -185,7 +190,7 @@ export class MinecraftServerCdkStack extends Stack {
         ENABLE_COMMAND_BLOCK: "true",
         ENABLE_RCON: "true",
         MAX_TICK_TIME: "60000",
-        MAX_MEMORY: "3600M",
+        MAX_MEMORY: "2048M",
         MAX_PLAYERS: "50",
         TYPE: type,
         MODPACK:
